@@ -1,6 +1,7 @@
 package ru.jdbc;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.office.Department;
 import ru.office.Service;
@@ -29,34 +30,26 @@ public class Tests {
     }
 
     @Test
+    @DisplayName("Проверка удаления департамента")
     public void checkDeleteDepartment () throws SQLException {
         Service.createDB();
         Connection connection = DBConect.getConnection();
         Department dept = null;
+        String nameDept="IT";
         int countBeforeDelete=0;
         int countAfterDelete=0;
         // проверяем, что департамент есть (не обязательно)
-        try {
-            String query = "SELECT * FROM Department where Department.NAME='IT'";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                int id = rs.getInt("ID");
-                String name = rs.getString("NAME");
-                dept=new Department(id,name);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            dept=Conn.infoDepartment(nameDept);
         // сохраняем, сколько сотрудников было до удаления отдела
-        System.out.println("----------Было сотрудников до удаления: ----------");
-        countBeforeDelete=Conn.countITEmployee();
+            System.out.println("----------Было сотрудников до удаления: ----------");
+            countBeforeDelete=Conn.countITEmployee();
+            if (countBeforeDelete==0) throw new RuntimeException("Test doesn't valid!");
         //удаляем IT отдел
-        Service.removeDepartment(dept);
-        Assertions.assertEquals(0,Conn.checkDept());
+            Service.removeDepartment(dept);
+            Assertions.assertEquals(0,Conn.checkDept(nameDept));
         // сохраняем, сколько стала сотрудников после удаления отдела
-        System.out.println("----------Стало сотрудников после удаления: ----------");
-        countAfterDelete=Conn.countITEmployee();
-        Assertions.assertEquals(0,countAfterDelete);
+            System.out.println("----------Стало сотрудников после удаления: ----------");
+            countAfterDelete=Conn.countITEmployee();
+            Assertions.assertEquals(0,countAfterDelete);
     }
 }

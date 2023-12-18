@@ -1,5 +1,7 @@
 package ru.jdbc;
 
+import ru.office.Department;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -83,13 +85,15 @@ public class Conn {
         }
         return countITEmployee;
     }
-
-    public static int checkDept () throws SQLException {
+    //Проверка наличия департамента в БД по наименованию
+    public static int checkDept (String nameDept) throws SQLException {
         Connection connection = DBConect.getConnection();
         int countITDept=0;
         try {
-            String query = "SELECT * FROM Department where Department.NAME='IT'";
+            //String query = "SELECT * FROM Department where Department.NAME='IT'";
+            String query = "SELECT * FROM Department where Department.NAME=?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1,nameDept);
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()==true){
                 countITDept++;
@@ -104,34 +108,23 @@ public class Conn {
         }
         return countITDept;
     }
-
-
-
-
-
-
-
-
-    /*public static List<Student> getALL() {
-
-        List<Student> students = new ArrayList<>();
-
+    public static Department infoDepartment (String nameDept){
+        Connection connection = DBConect.getConnection();
+        Department dept = null;
         try {
-            String query = "SELECT * FROM STUDENT";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet rs = preparedStatement.executeQuery();
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                int mark = rs.getInt("mark");
-
-                students.add(new Student(id, name, mark));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        String query = "SELECT * FROM Department where Department.NAME=?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,nameDept);
+        ResultSet rs = preparedStatement.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("ID");
+            String name = rs.getString("NAME");
+            dept=new Department(id,name);
         }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+        return dept;
+    }
 
-        return students;
-    }*/
 }
