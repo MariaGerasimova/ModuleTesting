@@ -1,4 +1,4 @@
-package ru.jdbc;
+package ru.officeJDBC;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,6 +1,4 @@
-package ru.jdbc;
-
-import ru.office.Department;
+package ru.officeJDBC;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

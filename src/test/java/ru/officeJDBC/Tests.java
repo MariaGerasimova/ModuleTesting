@@ -1,14 +1,10 @@
-package ru.jdbc;
+package ru.officeJDBC;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.office.Department;
-import ru.office.Service;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Tests {
@@ -36,6 +32,7 @@ public class Tests {
         Connection connection = DBConect.getConnection();
         Department dept = null;
         String nameDept="IT";
+        //test
         int countBeforeDelete=0;
         int countAfterDelete=0;
         // проверяем, что департамент есть (не обязательно)
